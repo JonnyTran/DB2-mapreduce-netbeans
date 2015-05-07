@@ -2,7 +2,6 @@ import java.io.IOException;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
-import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
@@ -17,7 +16,7 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 */
 public class AgeHistogram {
 
-    public static class AgeMapper extends Mapper<Object,Text,Text,IntWritable> {
+    public static class AgeHistogramMapper extends Mapper<Object,Text,Text,IntWritable> {
         @Override
         public void map(Object key, Text value, Context c) throws IOException, InterruptedException{
             String str = value.toString();
@@ -34,7 +33,7 @@ public class AgeHistogram {
         }
     }
 
-    public static class AgeReducer extends Reducer<Text,IntWritable,Text,Text> {
+    public static class AgeHistogramReducer extends Reducer<Text,IntWritable,Text,Text> {
         @Override
         public void reduce(Text key, Iterable<IntWritable>values, Context c) throws IOException,InterruptedException{
             int count = 0;
@@ -65,12 +64,12 @@ public class AgeHistogram {
         job.setOutputFormatClass(TextOutputFormat.class);
 
         //Set the mapper class
-        job.setMapperClass(AgeMapper.class);
+        job.setMapperClass(AgeHistogramMapper.class);
 
         //set the combiner class for custom combiner
         //j2.setCombinerClass(AgeReducer.class);
         //Set the reducer class
-        job.setReducerClass(AgeReducer.class);
+        job.setReducerClass(AgeHistogramReducer.class);
 
         //set the number of reducer if it is zero means there is no reducer
         //j2.setNumReduceTasks(0);
