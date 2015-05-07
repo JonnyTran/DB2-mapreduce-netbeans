@@ -26,8 +26,8 @@ public class AgeHistogram {
                 String year = strList[0].substring(0, 4);
                 int age = Integer.valueOf(strList[8]) / 10;
             
-                c.write(new Text(year + " " + age), new IntWritable(1));
-            } catch (NumberFormatException e) {
+                c.write(new Text(year + " " + age), new IntWritable(1));                
+            } catch (Exception e) {
                 
             }
         }
