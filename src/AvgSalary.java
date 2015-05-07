@@ -33,7 +33,7 @@ public class AvgSalary {
                     c.write(new Text(year + " " + state + " " + sex), new FloatWritable(wage));
                 }
                 
-            } catch (NumberFormatException e) {
+            } catch (Exception e) {
 
             }
         }
