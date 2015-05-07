@@ -20,10 +20,11 @@ public class AvgSalary {
     public static class AvgSalaryMapper extends Mapper<Object, Text, Text, FloatWritable> {
         @Override
         public void map(Object key,Text value, Context c) throws IOException, InterruptedException{
-            String str = value.toString();
-            String[] strList = str.split(",");
-
+            
             try {
+                String str = value.toString();
+                String[] strList = str.split(",");
+                
                 String year = strList[0].substring(0, 4);
                 String state = strList[5];
                 String sex = strList[69];                
@@ -42,24 +43,29 @@ public class AvgSalary {
     public static class AvgSalaryPartitioner extends Partitioner<Text, FloatWritable>{
         @Override
         public int getPartition(Text key, FloatWritable value, int noOfReducers) {
-            String year = value.toString().split(",")[0];
-                    
-            if(noOfReducers == 0)
-                return 0;
             
-            switch (year) {
-                case "2009":
-                    return 0 % noOfReducers;
-                case "2010":
-                    return 1 % noOfReducers;
-                case "2011":
-                    return 2 % noOfReducers;
-                case "2012":
-                    return 3 % noOfReducers;
-                case "2013":
-                    return 4 % noOfReducers;
-                default:
+            try {
+                String year = value.toString().split(",")[0];
+                    
+                if(noOfReducers == 0)
                     return 0;
+
+                switch (year) {
+                    case "2009":
+                        return 0 % noOfReducers;
+                    case "2010":
+                        return 1 % noOfReducers;
+                    case "2011":
+                        return 2 % noOfReducers;
+                    case "2012":
+                        return 3 % noOfReducers;
+                    case "2013":
+                        return 4 % noOfReducers;
+                    default:
+                        return 0;
+                }
+            } catch (Exception e) {
+                return 0;
             }
         }
     }
@@ -76,7 +82,9 @@ public class AvgSalary {
                 sum += wage.get();
             }
             
-            c.write(key, new FloatWritable(sum / count));
+            if (count > 0 && sum > 0) {
+                c.write(key, new FloatWritable(sum / count));
+            }
         }
     }
     public static void main(String[] args) throws IOException, InterruptedException,
