@@ -22,11 +22,15 @@ public class AgeHistogram {
         public void map(Object key, Text value, Context c) throws IOException, InterruptedException{
             String str = value.toString();
             String[] strList = str.split(",");
-
-            String year = strList[0].substring(0, 4);
-            String age = Integer.toString(Integer.parseInt(strList[8]) / 10);
-
-            c.write(new Text(year + " " + age), new IntWritable(1));
+            
+            try {
+                String year = strList[0].substring(0, 4);
+                int age = Integer.valueOf(strList[8]) / 10;
+            
+                c.write(new Text(year + " " + age), new IntWritable(1));
+            } catch (NumberFormatException e) {
+                
+            }
         }
     }
 
