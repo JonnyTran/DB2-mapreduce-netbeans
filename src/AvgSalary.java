@@ -44,29 +44,30 @@ public class AvgSalary {
         @Override
         public int getPartition(Text key, FloatWritable value, int noOfReducers) {
             
-            try {
-                String year = value.toString().split(",")[0];
-                    
-                if(noOfReducers == 0)
-                    return 0;
-
-                switch (year) {
-                    case "2009":
-                        return 0 % noOfReducers;
-                    case "2010":
-                        return 1 % noOfReducers;
-                    case "2011":
-                        return 2 % noOfReducers;
-                    case "2012":
-                        return 3 % noOfReducers;
-                    case "2013":
-                        return 4 % noOfReducers;
-                    default:
-                        return 0;
-                }
-            } catch (Exception e) {
-                return 0;
-            }
+//            try {
+//                String year = value.toString().split(",")[0];
+//                    
+//                if(noOfReducers == 0)
+//                    return 0;
+//
+//                switch (year) {
+//                    case "2009":
+//                        return 0 % noOfReducers;
+//                    case "2010":
+//                        return 1 % noOfReducers;
+//                    case "2011":
+//                        return 2 % noOfReducers;
+//                    case "2012":
+//                        return 3 % noOfReducers;
+//                    case "2013":
+//                        return 4 % noOfReducers;
+//                    default:
+//                        return 0;
+//                }
+//            } catch (Exception e) {
+//                return 0;
+//            }
+            return 0;
         }
     }
 
@@ -106,7 +107,7 @@ public class AvgSalary {
         j2.setReducerClass(AvgSalaryReducer.class);
         j2.setPartitionerClass(AvgSalaryPartitioner.class);
         
-        j2.setNumReduceTasks(5);
+        j2.setNumReduceTasks(1);
         
         FileOutputFormat.setOutputPath(j2, new Path(args[1]));
         FileInputFormat.addInputPath(j2, new Path(args[0]));
